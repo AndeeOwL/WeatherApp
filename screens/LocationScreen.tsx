@@ -3,13 +3,13 @@ import { LocationProps } from "../types/navigationTypes";
 import MapViewDirections from "react-native-maps-directions";
 import MapView, { Marker } from "react-native-maps";
 import { API_KEY } from "@env";
-import { Dimensions, StyleSheet } from "react-native";
+import { Alert, Dimensions, StyleSheet } from "react-native";
 
 function LocationScreen({ route, navigation }: LocationProps) {
   const currentCity = route.params.city;
   const ASPECT_RATIO = 400 / 400;
-  const LATITUDE = Number(route.params.uLat);
-  const LONGITUDE = Number(route.params.uLon);
+  const LATITUDE = Number(route.params.lat);
+  const LONGITUDE = Number(route.params.lon);
   const LATITUDE_DELTA = 0.0922;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 

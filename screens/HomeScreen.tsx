@@ -8,30 +8,27 @@ import { RootStackParamList } from "../types/navigationTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { getCity } from "../services/fetchingService";
 import { cityType } from "../types/cityType";
+import { useDispatch, useSelector } from "react-redux";
+import { changeCity } from "../redux/slices/city";
 
 function HomeScreen() {
-  const [city, setCity] = useState("");
+  const { city } = useSelector((state: any) => state.city);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [fetchedCity, setFetchedCity] = useState<cityType[]>();
+  const dispatch = useDispatch();
 
   const loadCityInformation = async () => {
-    if (city !== "") {
-      const cityInfo = await getCity(city);
-      if (cityInfo !== null) {
-        setFetchedCity(cityInfo);
-        if (fetchedCity) {
-          navigation.navigate("WheatherScreen", {
-            city: city,
-            lat: fetchedCity[0].lat,
-            lon: fetchedCity[0].lon,
-          });
-        }
-      }
+    const cityInfo = await getCity(city);
+    if (cityInfo) {
+      navigation.navigate("WheatherScreen", {
+        city: cityInfo[0].cityName,
+        lat: cityInfo[0].lat,
+        lon: cityInfo[0].lon,
+      });
     }
   };
 
   const inputHandler = (enteredText: string) => {
-    setCity(enteredText);
+    dispatch(changeCity(enteredText));
   };
 
   return (

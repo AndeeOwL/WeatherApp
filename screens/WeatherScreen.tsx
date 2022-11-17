@@ -1,5 +1,5 @@
 import { Button, Center, Spinner, Text, View, VStack } from "native-base";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CurrentWheather from "../components/CurrentWheather";
 import WeekWheather from "../components/WeekWheather";
 import { getWeatherInfo } from "../services/fetchingService";
@@ -14,7 +14,6 @@ import {
 import { Alert } from "react-native";
 
 function WheatherScreen({ route, navigation }: WeatherScreenProps) {
-  const [currentCity, setCurrentCity] = useState(route.params.city);
   const { fetchedWeatherInfo } = useSelector(
     (state: any) => state.fetchedWeatherInfo
   );
@@ -67,7 +66,7 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
     const location = await getCurrentLocation();
     if (location !== null) {
       navigation.navigate("LocationScreen", {
-        city: currentCity,
+        city: route.params.city,
         uLat: location.coords.latitude.toString(),
         uLon: location.coords.longitude.toString(),
         lat: route.params.lat,
@@ -86,7 +85,7 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
       >
         <VStack marginY={50} alignItems='center' flex={1}>
           <Text testID='cityName' fontSize='4xl'>
-            {currentCity}
+            {route.params.city}
           </Text>
           <CurrentWheather weather={fetchedWeatherInfo} />
           <Button size='md' marginTop={15} onPress={navigateToLocation}>
