@@ -1,21 +1,33 @@
 import { Button, Center, Text, View, VStack } from "native-base";
-import { useState } from "react";
-import SearchBar from "../components/Searchbar";
 import { LocationProps } from "../types/navigationTypes";
+import MapViewDirections from "react-native-maps-directions";
+import MapView, { Marker } from "react-native-maps";
+import { API_KEY } from "@env";
+import { Dimensions, StyleSheet } from "react-native";
 
-function LocationScreen({ route }: LocationProps) {
-  const [currentCity, setCurrentCity] = useState(route.params.city);
-  const [city, setCity] = useState("");
+function LocationScreen({ route, navigation }: LocationProps) {
+  const currentCity = route.params.city;
+  const ASPECT_RATIO = 400 / 400;
+  const LATITUDE = Number(route.params.uLat);
+  const LONGITUDE = Number(route.params.uLon);
+  const LATITUDE_DELTA = 0.0922;
+  const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
-  const inputHandler = (enteredText: string) => {
-    setCity(enteredText);
+  const origin = {
+    latitude: Number(route.params.uLat),
+    longitude: Number(route.params.uLon),
+  };
+  const destination = {
+    latitude: Number(route.params.lat),
+    longitude: Number(route.params.lon),
   };
 
-  const loadCityInformation = () => {
-    if (city !== "") {
-      setCurrentCity(city);
-    }
+  const navigate = () => {
+    navigation.navigate("HomeScreen");
   };
+
+  const windowWidth = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
 
   return (
     <Center
@@ -25,19 +37,38 @@ function LocationScreen({ route }: LocationProps) {
       flex={1}
     >
       <VStack marginTop={75} alignItems='center' flex={1}>
-        <Text fontSize='4xl'>{currentCity}</Text>
+        <Text fontSize='4xl'>Route to {currentCity}</Text>
         <View
-          backgroundColor='amber.50'
+          backgroundColor='#fff'
+          alignItems='center'
+          justifyContent='center'
           marginY={50}
           marginX={25}
-          width={400}
-          height={400}
+          width={windowWidth - 25}
+          height={windowHeight - 500}
         >
-          <Text fontSize='xl'>NAVIGATION</Text>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: LATITUDE,
+              longitude: LONGITUDE,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }}
+          >
+            <Marker coordinate={origin} />
+            <Marker coordinate={destination} />
+            <MapViewDirections
+              origin={origin}
+              destination={destination}
+              apikey={API_KEY}
+              strokeWidth={3}
+              strokeColor='hotpink'
+            />
+          </MapView>
         </View>
-        <SearchBar title={"Visit other city ?"} onChangeText={inputHandler} />
-        <Button size='sm' onPress={loadCityInformation}>
-          SEARCH
+        <Button size='md' onPress={navigate}>
+          SEARCH FOR OTHER CITY
         </Button>
       </VStack>
     </Center>
@@ -45,3 +76,10 @@ function LocationScreen({ route }: LocationProps) {
 }
 
 export default LocationScreen;
+
+const styles = StyleSheet.create({
+  map: {
+    width: "100%",
+    height: "100%",
+  },
+});

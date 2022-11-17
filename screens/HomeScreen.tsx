@@ -21,7 +21,7 @@ function HomeScreen() {
         setFetchedCity(cityInfo);
         if (fetchedCity) {
           navigation.navigate("WheatherScreen", {
-            city: fetchedCity[0].cityName,
+            city: city,
             lat: fetchedCity[0].lat,
             lon: fetchedCity[0].lon,
           });

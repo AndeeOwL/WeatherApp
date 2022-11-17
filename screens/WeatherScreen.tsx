@@ -1,24 +1,26 @@
 import { Button, Center, Spinner, Text, View, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import CurrentWheather from "../components/CurrentWheather";
-import SearchBar from "../components/Searchbar";
 import WeekWheather from "../components/WeekWheather";
 import { getWeatherInfo } from "../services/fetchingService";
 import { WeatherScreenProps } from "../types/navigationTypes";
 import { useSelector, useDispatch } from "react-redux";
 import { addInfo } from "../redux/slices/fetchedWeatherInfo";
+import {
+  getCurrentPositionAsync,
+  PermissionStatus,
+  useForegroundPermissions,
+} from "expo-location";
+import { Alert } from "react-native";
 
 function WheatherScreen({ route, navigation }: WeatherScreenProps) {
   const [currentCity, setCurrentCity] = useState(route.params.city);
-  const [city, setCity] = useState("");
   const { fetchedWeatherInfo } = useSelector(
     (state: any) => state.fetchedWeatherInfo
   );
+  const [locationPermissionInformation, requestPermision] =
+    useForegroundPermissions();
   const dispatch = useDispatch();
-
-  const inputHandler = (enteredText: string) => {
-    setCity(enteredText);
-  };
 
   const weatherInfo = async () => {
     const weather = await getWeatherInfo(route.params.lat, route.params.lon);
@@ -26,22 +28,52 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
       dispatch(addInfo(weather));
     }
   };
-
   useEffect(() => {
     weatherInfo();
-  }, [currentCity]);
+  }, []);
 
-  const loadCityInformation = () => {
-    if (city !== "") {
-      setCurrentCity(city);
-    }
+  const navigate = () => {
+    navigation.navigate("HomeScreen");
   };
-  const navigateToLocation = () => {
-    navigation.navigate("LocationScreen", {
-      city: currentCity,
-      lat: route.params.lat,
-      lon: route.params.lon,
-    });
+
+  async function verifyPermissions() {
+    if (
+      locationPermissionInformation?.status === PermissionStatus.UNDETERMINED
+    ) {
+      const permissionResponse = await requestPermision();
+      return permissionResponse.granted;
+    }
+    if (locationPermissionInformation?.status === PermissionStatus.DENIED) {
+      Alert.alert("You have to grant permissions to use this service");
+      return false;
+    }
+    return true;
+  }
+
+  async function getCurrentLocation() {
+    const userLocation = await getCurrentPositionAsync();
+    if (userLocation) {
+      return userLocation;
+    } else {
+      return null;
+    }
+  }
+
+  const navigateToLocation = async () => {
+    const hasPermission = await verifyPermissions();
+    if (!hasPermission) {
+      return;
+    }
+    const location = await getCurrentLocation();
+    if (location !== null) {
+      navigation.navigate("LocationScreen", {
+        city: currentCity,
+        uLat: location.coords.latitude.toString(),
+        uLon: location.coords.longitude.toString(),
+        lat: route.params.lat,
+        lon: route.params.lon,
+      });
+    }
   };
 
   if (fetchedWeatherInfo[0] !== "empty") {
@@ -63,9 +95,9 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
           <View testID='scrollable' marginY={50} flex={1}>
             <WeekWheather weather={fetchedWeatherInfo} />
           </View>
-          <SearchBar title={"Check other city ?"} onChangeText={inputHandler} />
-          <Button size='sm' onPress={loadCityInformation}>
-            SEARCH
+
+          <Button size='md' onPress={navigate} marginY={25}>
+            SEARCH FOR OTHER CITY
           </Button>
         </VStack>
       </Center>
