@@ -5,12 +5,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import WheatherScreen from "./screens/WeatherScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { RootStackParamList } from "./types/navigationTypes";
-import { StatusBar } from "react-native";
+import { LogBox, StatusBar } from "react-native";
 import store from "./redux/store";
 import { Provider } from "react-redux";
 import LocationScreen from "./screens/LocationScreen";
 
 export default function App() {
+  LogBox.ignoreLogs(["MapViewDirections Error:"]);
   const RootStack = createStackNavigator<RootStackParamList>();
 
   return (
