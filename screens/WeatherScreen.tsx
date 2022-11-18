@@ -54,7 +54,8 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
     if (userLocation) {
       return userLocation;
     } else {
-      return null;
+      Alert.alert("could get your location");
+      return;
     }
   }
 
@@ -64,7 +65,7 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
       return;
     }
     const location = await getCurrentLocation();
-    if (location !== null) {
+    if (location) {
       navigation.navigate("LocationScreen", {
         city: route.params.city,
         uLat: location.coords.latitude.toString(),
@@ -72,6 +73,9 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
         lat: route.params.lat,
         lon: route.params.lon,
       });
+    } else {
+      Alert.alert("location not fetched in time");
+      return;
     }
   };
 
