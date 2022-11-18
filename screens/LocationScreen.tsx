@@ -47,7 +47,7 @@ function LocationScreen({ route, navigation }: LocationProps) {
           width={windowWidth - 25}
           height={windowHeight - 500}
         >
-          <MapView
+          {/* <MapView
             style={styles.map}
             initialRegion={{
               latitude: LATITUDE,
@@ -65,7 +65,7 @@ function LocationScreen({ route, navigation }: LocationProps) {
               strokeWidth={3}
               strokeColor='hotpink'
             />
-          </MapView>
+          </MapView> */}
         </View>
         <Button size='md' onPress={navigate}>
           SEARCH FOR OTHER CITY

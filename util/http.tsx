@@ -12,6 +12,7 @@ export async function fetchCityInformation(city: string) {
       lat: response.data[key].lat,
       lon: response.data[key].lon,
     };
+    console.log(cityObj);
     cityInfo.push(cityObj);
   }
   return cityInfo;
