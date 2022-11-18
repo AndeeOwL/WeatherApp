@@ -1,9 +1,9 @@
-import { Button, Center, Spinner, Text, View, VStack } from "native-base";
+import { Button, Center, Text, View, VStack } from "native-base";
 import { LocationProps } from "../types/navigationTypes";
 import MapViewDirections from "react-native-maps-directions";
 import MapView, { Marker } from "react-native-maps";
 import { API_KEY } from "@env";
-import { Alert, Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 function LocationScreen({ route, navigation }: LocationProps) {
   const currentCity = route.params.city;
@@ -29,57 +29,50 @@ function LocationScreen({ route, navigation }: LocationProps) {
   const windowWidth = Dimensions.get("window").width;
   const windowHeight = Dimensions.get("window").height;
 
-  if (
-    route.params.lat &&
-    route.params.lon &&
-    route.params.uLat &&
-    route.params.uLon
-  ) {
-    return (
-      <Center
-        _dark={{ bg: "blue.700" }}
-        _light={{ bg: "blue.200" }}
-        px={4}
-        flex={1}
-      >
-        <VStack marginTop={75} alignItems='center' flex={1}>
-          <Text fontSize='4xl'>Route to {currentCity}</Text>
-          <View
-            backgroundColor='#fff'
-            alignItems='center'
-            justifyContent='center'
-            marginY={50}
-            marginX={25}
-            width={windowWidth - 25}
-            height={windowHeight - 500}
+  return (
+    <Center
+      _dark={{ bg: "blue.700" }}
+      _light={{ bg: "blue.200" }}
+      px={4}
+      flex={1}
+    >
+      <VStack marginTop={75} alignItems='center' flex={1}>
+        <Text fontSize='4xl'>Route to {currentCity}</Text>
+        <View
+          backgroundColor='#fff'
+          alignItems='center'
+          justifyContent='center'
+          marginY={50}
+          marginX={25}
+          width={windowWidth - 25}
+          height={windowHeight - 500}
+        >
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: LATITUDE,
+              longitude: LONGITUDE,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }}
           >
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: LATITUDE,
-                longitude: LONGITUDE,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA,
-              }}
-            >
-              <Marker coordinate={origin} />
-              <Marker coordinate={destination} />
-              <MapViewDirections
-                origin={origin}
-                destination={destination}
-                apikey={"AIzaSyDqHBCu-R0JQ8ULsCgjQEqEMomsZ_k7fc0"}
-                strokeWidth={3}
-                strokeColor='hotpink'
-              />
-            </MapView>
-          </View>
-          <Button size='md' onPress={navigate}>
-            SEARCH FOR OTHER CITY
-          </Button>
-        </VStack>
-      </Center>
-    );
-  } else return <Spinner />;
+            <Marker coordinate={origin} />
+            <Marker coordinate={destination} />
+            <MapViewDirections
+              origin={origin}
+              destination={destination}
+              apikey={API_KEY}
+              strokeWidth={3}
+              strokeColor='hotpink'
+            />
+          </MapView>
+        </View>
+        <Button size='md' onPress={navigate}>
+          SEARCH FOR OTHER CITY
+        </Button>
+      </VStack>
+    </Center>
+  );
 }
 
 export default LocationScreen;

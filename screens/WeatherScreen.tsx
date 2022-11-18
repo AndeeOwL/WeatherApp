@@ -54,7 +54,6 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
     if (userLocation) {
       return userLocation;
     } else {
-      Alert.alert("could get your location");
       return;
     }
   }
@@ -74,8 +73,8 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
         lon: route.params.lon,
       });
     } else {
-      Alert.alert("location not fetched in time");
-      return;
+      navigation.navigate("HomeScreen");
+      Alert.alert("user location not set correctly");
     }
   };
 

@@ -3,7 +3,7 @@ import { ENV_VAR } from "@env";
 
 export async function fetchCityInformation(city: string) {
   const response = await axios.get(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=f631fd357c75163a46154773a513dd64`
+    `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${ENV_VAR}`
   );
   const cityInfo = [];
   for (const key in response.data) {
