@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -24,7 +22,12 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.andrean.weatherapp"
+      "package": "com.andrean.weatherapp",
+      "config": {
+        "googleMaps": {
+          "apiKey": "enter api key here"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
