@@ -34,6 +34,7 @@ function HomeScreen() {
   return (
     <>
       <Center
+        testID='home_screen'
         _dark={{ bg: "blue.700" }}
         _light={{ bg: "blue.100" }}
         px={4}
@@ -42,7 +43,11 @@ function HomeScreen() {
         <Logo />
         <SearchBar title={"What`s the wheather"} onChangeText={inputHandler} />
         <VStack space={5} alignItems='center'>
-          <Button size='sm' onPress={loadCityInformation}>
+          <Button
+            testID='search_button'
+            size='sm'
+            onPress={loadCityInformation}
+          >
             SEARCH
           </Button>
         </VStack>

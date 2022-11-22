@@ -10,6 +10,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": ["@config-plugins/detox"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },

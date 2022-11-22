@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 function SearchBar(props: any) {
   return (
     <VStack
+      testID='searchbar'
       my='4'
       space={5}
       w='100%'

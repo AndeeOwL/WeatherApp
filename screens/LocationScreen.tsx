@@ -36,7 +36,7 @@ function LocationScreen({ route, navigation }: LocationProps) {
       px={4}
       flex={1}
     >
-      <VStack marginTop={75} alignItems='center' flex={1}>
+      <VStack testID='route_screen' marginTop={75} alignItems='center' flex={1}>
         <Text fontSize='4xl'>Route to {currentCity}</Text>
         <View
           backgroundColor='#fff'
@@ -67,7 +67,7 @@ function LocationScreen({ route, navigation }: LocationProps) {
             />
           </MapView>
         </View>
-        <Button size='md' onPress={navigate}>
+        <Button testID='home_button' size='md' onPress={navigate}>
           SEARCH FOR OTHER CITY
         </Button>
       </VStack>

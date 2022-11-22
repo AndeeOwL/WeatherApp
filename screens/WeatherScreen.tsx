@@ -91,7 +91,12 @@ function WheatherScreen({ route, navigation }: WeatherScreenProps) {
             {route.params.city}
           </Text>
           <CurrentWheather weather={fetchedWeatherInfo} />
-          <Button size='md' marginTop={15} onPress={navigateToLocation}>
+          <Button
+            testID='navigate'
+            size='md'
+            marginTop={15}
+            onPress={navigateToLocation}
+          >
             NAVIGATE
           </Button>
           <View testID='scrollable' marginY={50} flex={1}>
