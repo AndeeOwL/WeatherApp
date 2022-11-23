@@ -16,6 +16,7 @@ describe("e2e tests", () => {
   });
 
   it("should have button navigate to other screen", async () => {
+    await element(by.id("searchbar")).typeText("Plovdiv");
     await element(by.id("search_button")).tap();
     await expect(element(by.testID("temp"))).toBeVisible();
   });
